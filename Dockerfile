@@ -1,9 +1,8 @@
 FROM golang:1.9.2 as builder
-RUN go get -u github.com/sparrc/gdm
-COPY Godeps /go/src/github.com/influxdata/influxdb/Godeps
+RUN go get -u github.com/golang/dep/...
 WORKDIR /go/src/github.com/influxdata/influxdb
-RUN gdm restore
 COPY . /go/src/github.com/influxdata/influxdb
+RUN dep ensure -vendor-only
 RUN go install ./cmd/...
 
 FROM debian:stretch
